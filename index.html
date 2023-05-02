@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>Valerie Custom Component</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background-color: hsla(202.6086956521739,100%,13.529411764705882%);
+            color: white;
+            font-family: Poppins, "proxima-nova","Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+        main {
+            padding: 80px 40px;
+        }
+    </style>
+</head>
+<body>
+<main>
+<!-- Begin custom component -->
+<style>
+    .custom_component {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .custom_event {
+        width: calc((100% - 4rem) / 3);
+        max-width: calc((1200px - 4rem) / 3);
+        margin-bottom: 2rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background-color: rgb(255,255,255,0.15);
+        display: flex;
+        transition: 0.3s;
+        text-decoration: none;
+        cursor: pointer;
+        color: inherit;
+        margin-right: 2rem;
+    }
+
+    .custom_event:nth-child(3n) {
+        margin-right: 0;
+    }
+
+    .custom_event:hover {
+        transform: scale(1.03);
+        transform-origin: center center;
+    }
+
+    .custom_event-info, .custom_event-thumbnail {
+        padding: 1rem;
+    }
+
+    .custom_event-info {
+        width: 41%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .custom_event-days {
+        font-size: 1.25rem;
+        font-weight: 600;
+        text-align: center;
+        line-height: 1;
+    }
+
+    .custom_event-month {
+        margin-top: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 1;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .custom_event-date {
+        margin-bottom: 1.5rem;
+        font-size: 2.5rem;
+        font-weight: 600;
+        text-align: center;
+        line-height: 1;
+    }
+
+    .custom_event-times {
+        font-size: 1.25rem;
+        font-weight: 300;
+        text-align: center;
+        line-height: 1;
+    }
+
+    .custom_event-thumbnail {
+        width: 59%;
+        position: relative;
+        padding-top: 100%;
+        background-size: cover;
+        background-position: 50% 50%;
+    }
+
+    .custom_event-cta {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        opacity: 0;
+        transition: 0.3s;
+    }
+
+    .custom_button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 1rem;
+        background-color: white;
+        color: black;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        font-family: inherit;
+        cursor: pointer;
+    }
+
+    .custom_event-thumbnail:hover .custom_event-cta {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .custom_event {
+            width: calc((100% - 2rem) / 2);
+        }
+        .custom_event:nth-child(3n) {
+            margin-right: 2rem;
+        }
+        .custom_event:nth-child(2n) {
+            margin-right: 0;
+        }
+    }
+
+    @media screen and (max-width: 704px) {
+        .custom_event {
+            width: 100%;
+            margin-right: 0;
+            max-width: 704px;
+        }
+    }
+</style>
+
+<div class="custom_component"></div>
+
+<script>
+    // Map event info to event titles
+    const eventMap = {
+        'relax-monday': {
+            title: 'Relax Monday',
+            time: '1 PM',
+            cta: 'Reserve Now',
+            link: 'https://www.valerietoronto.ca/open-table',
+            flyer: 'assets/relax-monday.png'
+        },
+        'thursday-night-swim': {
+            title: 'Thursday Night Swim',
+            time: '5 PM',
+            cta: 'Inquire',
+            link: 'mailto:reservations@valerietoronto.ca',
+            flyer: 'assets/thursday-night-swim.png'
+        },
+        'summer-house-sundays': {
+            title: 'Summer House Sundays',
+            time: 'TBD',
+            cta: 'Inquire',
+            link: 'mailto:reservations@valerietoronto.ca',
+            flyer: 'assets/summer-house-sundays.png'
+        },
+        '5a7': {
+            title: '5à7',
+            time: '5-7 PM',
+            cta: 'Reserve Now',
+            link: 'https://www.valerietoronto.ca/open-table',
+            flyer: 'assets/5a7.png'
+        },
+        'bubbly-brunch': {
+            title: 'Bubbly Brunch',
+            time: '12-3 PM',
+            cta: 'Reserve Now',
+            link: 'https://www.valerietoronto.ca/open-table',
+            flyer: 'assets/bubbly-brunch.png'
+        },
+        'live-music': {
+            title: 'Live Music',
+            time: '7-10 PM',
+            cta: 'Reserve Now',
+            link: 'https://www.valerietoronto.ca/open-table',
+            flyer: 'assets/live-music.jpeg'
+        }
+    }
+
+    // Map events to each day of the week
+    const dayMap = {
+        // Sunday
+        0: ['bubbly-brunch', 'summer-house-sundays'],
+        // Monday
+        1: ['relax-monday'],
+        // Tuesday
+        2: [],
+        // Wednesday
+        3: ['5a7'],
+        // Thursday
+        4: ['5a7', 'thursday-night-swim'],
+        // Friday
+        5: ['5a7', 'live-music'],
+        // Saturday
+        6: ['bubbly-brunch', 'live-music']
+    }
+
+    // Indexable array of week days
+    const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    // Indexable array of months
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+    // Events start May 18, 2023
+    const startDate = new Date(2023, 4, 18);
+    // Set the current date to today's date
+    let currentDate = new Date();
+    // If today's date is before May 18, set current date to May 18
+    if (currentDate < startDate) currentDate = startDate;
+
+    // Initialize a counter to keep track of rotating Sunday events
+    let sundays = 0;
+    // For the next 30 days
+    for (let i = 0; i < 30; i++) {
+        // Get the current day's event IDs
+        const events = dayMap[currentDate.getDay()];
+
+        // For each event ID
+        events.forEach(event => {
+            // Get the current event's info
+            const eventInfo = eventMap[event];
+            // Add the event template to the container
+            document.querySelector('.custom_component').innerHTML += `
+            <a href="${eventInfo.link}" target="_blank" class="custom_event">
+                <div class="custom_event-info">
+                    <span class="custom_event-days">${weekDays[currentDate.getDay()]}</span>
+                    <span class="custom_event-month">${months[currentDate.getMonth()]}</span>
+                    <span class="custom_event-date">${currentDate.getDate()}</span>
+                    <span class="custom_event-times">${eventInfo.time}</span>
+                </div>
+                <div class="custom_event-thumbnail" style="background-image: url(${eventInfo.flyer});">
+                    <div class="custom_event-cta">
+                        <button class="custom_button">${eventInfo.cta}</button>
+                    </div>
+                </div>
+            </a>
+            `;
+        });
+
+        // Increment the current date
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+</script>
+<!-- End custom component -->
+</main>
+</body>
+</html>
