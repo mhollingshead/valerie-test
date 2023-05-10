@@ -96,7 +96,7 @@
     }
 
     .custom_event-times {
-        font-size: 1.25rem;
+        font-size: 1rem;
         font-weight: 300;
         text-align: center;
         line-height: 1;
@@ -175,56 +175,62 @@
     const eventMap = {
         'relax-monday': {
             title: 'Relax Monday',
-            time: '1 PM',
+            time: '1-5PM',
             cta: 'Reserve Now',
             link: 'https://www.valerietoronto.ca/open-table',
-            flyer: 'assets/relax-monday.png'
+            flyer: ['https://images.squarespace-cdn.com/content/628651ba23481e122bd9e061/4c6221c1-df33-4120-8c63-0fc746b785e1/relax-monday.png?content-type=image%2Fpng'],
+            start: new Date(2023, 4, 29)
         },
         'thursday-night-swim': {
             title: 'Thursday Night Swim',
-            time: '5 PM',
+            time: '7:30-10:30PM',
             cta: 'Inquire',
             link: 'mailto:reservations@valerietoronto.ca',
-            flyer: 'assets/thursday-night-swim.png'
+            flyer: ['https://images.squarespace-cdn.com/content/628651ba23481e122bd9e061/fc47a7f6-2e53-40ec-aaea-061d718536a5/thursday-night-swim.png?content-type=image%2Fpng'],
+            start: new Date(2023, 5, 1)
         },
         'summer-house-sundays': {
             title: 'Summer House Sundays',
-            time: 'TBD',
+            time: '3PM-Late',
             cta: 'Inquire',
             link: 'mailto:reservations@valerietoronto.ca',
-            flyer: 'assets/summer-house-sundays.png'
+            flyer: ['https://images.squarespace-cdn.com/content/628651ba23481e122bd9e061/314f31a7-22bb-4b51-98ae-9538939a87e7/summer-house-sundays.png?content-type=image%2Fpng'],
+            start: new Date(2023, 4, 28)
         },
         '5a7': {
             title: '5à7',
-            time: '5-7 PM',
+            time: '5-7PM',
             cta: 'Reserve Now',
             link: 'https://www.valerietoronto.ca/open-table',
-            flyer: 'assets/5a7.png'
+            flyer: ['https://images.squarespace-cdn.com/content/628651ba23481e122bd9e061/371576d3-fc30-45bd-879e-3fbcdc540bbf/5a7.png?content-type=image%2Fpng'],
+            start: new Date(2023, 4, 26)
         },
         'bubbly-brunch': {
             title: 'Bubbly Brunch',
-            time: '12-3 PM',
+            time: '12-3PM',
             cta: 'Reserve Now',
             link: 'https://www.valerietoronto.ca/open-table',
-            flyer: 'assets/bubbly-brunch.png'
+            flyer: ['https://images.squarespace-cdn.com/content/628651ba23481e122bd9e061/e6aebb05-90ae-4bd6-b153-e118502b3ba7/bubbly-brunch.png?content-type=image%2Fpng'],
+            start: new Date(2023, 4, 27)
         },
         'live-music': {
             title: 'Live Music',
-            time: '7-10 PM',
+            time: '8-11PM',
             cta: 'Reserve Now',
             link: 'https://www.valerietoronto.ca/open-table',
-            flyer: 'assets/live-music.jpeg'
+            flyer: ['https://images.squarespace-cdn.com/content/628651ba23481e122bd9e061/6ad73194-99fc-4c9b-a6ea-183719b40093/live-music.png?content-type=image%2Fpng'],
+            start: new Date(2023, 4, 26)
         }
     }
 
     // Map events to each day of the week
     const dayMap = {
         // Sunday
-        0: ['bubbly-brunch', 'summer-house-sundays'],
+        0: ['bubbly-brunch', 'summer-house-sundays', '5a7'],
         // Monday
-        1: ['relax-monday'],
+        1: ['relax-monday', '5a7'],
         // Tuesday
-        2: [],
+        2: ['5a7'],
         // Wednesday
         3: ['5a7'],
         // Thursday
@@ -232,7 +238,7 @@
         // Friday
         5: ['5a7', 'live-music'],
         // Saturday
-        6: ['bubbly-brunch', 'live-music']
+        6: ['bubbly-brunch', '5a7', 'live-music']
     }
 
     // Indexable array of week days
@@ -241,7 +247,7 @@
     const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
     // Events start May 18, 2023
-    const startDate = new Date(2023, 4, 18);
+    const startDate = new Date(2023, 4, 26);
     // Set the current date to today's date
     let currentDate = new Date();
     // If today's date is before May 18, set current date to May 18
@@ -258,18 +264,21 @@
         events.forEach(event => {
             // Get the current event's info
             const eventInfo = eventMap[event];
+            // Get the correct flyer
+            const nthWeek = Math.round((currentDate - eventInfo.start) / 604800000);
+            const flyer = eventInfo.flyer[nthWeek % eventInfo.flyer.length];
             // Add the event template to the container
-            document.querySelector('.custom_component').innerHTML += `
-            <a href="${eventInfo.link}" target="_blank" class="custom_event">
+            if (currentDate >= eventInfo.start) document.querySelector('.custom_component').innerHTML += `
+            <a href="${/*eventInfo.link*/'mailto:reservations@valerietoronto.ca'}" target="_blank" class="custom_event">
                 <div class="custom_event-info">
                     <span class="custom_event-days">${weekDays[currentDate.getDay()]}</span>
                     <span class="custom_event-month">${months[currentDate.getMonth()]}</span>
                     <span class="custom_event-date">${currentDate.getDate()}</span>
                     <span class="custom_event-times">${eventInfo.time}</span>
                 </div>
-                <div class="custom_event-thumbnail" style="background-image: url(${eventInfo.flyer});">
+                <div class="custom_event-thumbnail" style="background-image: url(${flyer});">
                     <div class="custom_event-cta">
-                        <button class="custom_button">${eventInfo.cta}</button>
+                        <button class="custom_button">${/*eventInfo.cta*/'Inquire'}</button>
                     </div>
                 </div>
             </a>
